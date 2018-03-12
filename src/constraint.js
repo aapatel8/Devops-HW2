@@ -238,8 +238,6 @@ function constraints(filePath) {
                             rightHand = rightHand.substring(1,4) + testPhoneNum.substring(3,testPhoneNum.length-1);
                             let ident = "phoneNumber";
 
-                            // console.log(expression);
-
                             functionConstraints[funcName].constraints[ident].push(new Constraint({
                                 ident: ident,
                                 value:  "\""+rightHand+"\"",
@@ -263,7 +261,7 @@ function constraints(filePath) {
                     }
                 }
 
-                // Handle fs.existsSync
+                // Handle mode
                 if( child.type === "CallExpression" && child.callee.property && child.callee.property.name === "indexOf" ) {
 
                     // Get expression from original source code:
@@ -275,6 +273,36 @@ function constraints(filePath) {
                     functionConstraints[funcName].constraints[innerFunc].push(new Constraint({
                         ident: innerFunc,
                         value:  value,
+                        funcName: funcName,
+                        kind: "string",
+                        operator : child.operator,
+                        expression: expression
+                    }));
+                }
+
+                // Handle mode
+                if( child.type === "LogicalExpression" && child.operator === "||" && child.left.type === "UnaryExpression" && 
+                    child.left.argument.name === "options" && child.left.operator === "!") {
+
+                    let expression = buf.substring(child.range[0], child.range[1]);
+                    let ident = child.left.argument.name;
+                    let value1 = "{normalize:false}";
+                    let value2 = "{normalize:true}";
+
+                    // Push a new constraint
+                    functionConstraints[funcName].constraints[ident].push(new Constraint({
+                        ident: ident,
+                        value:  value1,
+                        funcName: funcName,
+                        kind: "string",
+                        operator : child.operator,
+                        expression: expression
+                    }));
+
+                    // Push a new constraint
+                    functionConstraints[funcName].constraints[ident].push(new Constraint({
+                        ident: ident,
+                        value:  value2,
                         funcName: funcName,
                         kind: "string",
                         operator : child.operator,

@@ -22,12 +22,6 @@ const mockFileLibrary = {
             someDir: 'mock.directory()'
         }
     },
-    // fileWithoutContent: {
-    //     pathContent: {
-    //         file1: "new Buffer('')",
-    //         someDir: 'mock.directory()'
-    //     }
-    // }
 };
 
 
