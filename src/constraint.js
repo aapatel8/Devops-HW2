@@ -226,7 +226,7 @@ function constraints(filePath) {
                 }
 
                 // Handle phone numbers
-                if( child.type === "BinaryExpression" && child.operator === "==" && child.left.type === "Identifier" &&
+                if( child.type === "BinaryExpression" && child.left.type === "Identifier" &&
                     child.left.name === "area") {
                     var rightHand = buf.substring(child.right.range[0], child.right.range[1]);
                     // Get expression from original source code:
@@ -286,8 +286,9 @@ function constraints(filePath) {
 
                     let expression = buf.substring(child.range[0], child.range[1]);
                     let ident = child.left.argument.name;
-                    let value1 = "{normalize:false}";
-                    let value2 = "{normalize:true}";
+                    let optionsProperty = child.right.argument.property.name;
+                    let value1 = "{" + optionsProperty + ":false}";
+                    let value2 = "{" + optionsProperty + ":true}";
 
                     // Push a new constraint
                     functionConstraints[funcName].constraints[ident].push(new Constraint({
