@@ -10,4 +10,5 @@ This homework aims to get full branch coverage by automatically generating test 
 
 ## Run the following
 
+	npm install
 	npm test
